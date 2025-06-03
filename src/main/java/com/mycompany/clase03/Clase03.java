@@ -56,7 +56,7 @@ public class Clase03 {
             int menu = scanner.nextInt();
             switch (menu) {
                 case 1:
-                    vehiculos
+                    
                     break;
                 case 2:
                     
