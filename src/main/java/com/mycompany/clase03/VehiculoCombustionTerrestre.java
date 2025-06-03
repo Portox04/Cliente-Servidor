@@ -22,7 +22,6 @@ public class VehiculoCombustionTerrestre extends VehiculoTerrestre implements Ve
     private String direction = "Recta";
     private int timeStart;
 
-
     public VehiculoCombustionTerrestre(int tanqueCombustible, String tipoVehiculo, int cantidadRuedas, String id, int anio, String marca, String modelo) {
         super(tipoVehiculo, cantidadRuedas, id, anio, marca, modelo);
         this.tanqueCombustible = tanqueCombustible;
@@ -72,11 +71,9 @@ public class VehiculoCombustionTerrestre extends VehiculoTerrestre implements Ve
                 }
             }
         };
-        
 
         timer.scheduleAtFixedRate(tarea, 0, 10000); // cada 10 segundos
     }
-
 
     @Override
     public void apagar() {
@@ -103,7 +100,10 @@ public class VehiculoCombustionTerrestre extends VehiculoTerrestre implements Ve
             System.out.println("Prende el vehiculo primeramente");
         }
     }
-    
 
+    @Override
+    public void girar(String direccion) {
+
+    }
 
 }

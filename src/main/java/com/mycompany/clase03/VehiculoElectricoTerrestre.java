@@ -15,13 +15,18 @@ public class VehiculoElectricoTerrestre extends VehiculoTerrestre implements Veh
 
     Timer timer = new Timer();
     private int porcentajeBateria;
-    private boolean status = false;
+    private boolean status;
     private String direction = "Recta";
     private int timeStart;
 
-    public VehiculoElectricoTerrestre(int porcentajeBateria, String tipoVehiculo, int cantidadRuedas, String id, int anio, String marca, String modelo) {
+    public VehiculoElectricoTerrestre(int porcentajeBateria, String tipoVehiculo, int cantidadRuedas, String id, int anio, String marca, String modelo) throws VehiculeException{
         super(tipoVehiculo, cantidadRuedas, id, anio, marca, modelo);
         this.porcentajeBateria = porcentajeBateria;
+        
+        if (porcentajeBateria <0 || porcentajeBateria > 100) {
+            throw new VehiculeException("Porcentaje de bateria invalido. Bateria defectuosa (Valores de 0 a 100)");
+        }
+        this.status = false;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class VehiculoElectricoTerrestre extends VehiculoTerrestre implements Veh
 
     @Override
     public void encender() {
-        this.status = true;
+        
 
         timer = new Timer(); // recrear el Timer por si ya se canceló
 
@@ -64,8 +69,14 @@ public class VehiculoElectricoTerrestre extends VehiculoTerrestre implements Veh
                 }
             }
         };
-
-        timer.scheduleAtFixedRate(tarea, 0, 10000); // cada 10 segundos
+        
+        if (porcentajeBateria > 0) {
+            status = true;
+            timer.scheduleAtFixedRate(tarea, 0, 10000); // cada 10 segundos
+            System.out.println("Vehiculo encendido");
+        }
+        else System.out.println("Vehiculo descargado");
+        
     }
 
     @Override
@@ -76,9 +87,9 @@ public class VehiculoElectricoTerrestre extends VehiculoTerrestre implements Veh
 
     @Override
     public void avanzar() {
-        if (this.status == true) {
+        if (!status) {
             System.out.println("Vehiculo avanza a " + direction);
-            this.porcentajeBateria--;
+            porcentajeBateria--;
         } else {
             System.out.println("Prende el vehiculo primeramente");
         }
@@ -86,12 +97,17 @@ public class VehiculoElectricoTerrestre extends VehiculoTerrestre implements Veh
 
     @Override
     public void retroceder() {
-        if (this.status == true) {
+        if (status == true) {
             System.out.println("Vehiculo retocede");
-            this.porcentajeBateria--;
+            porcentajeBateria--;
         } else {
             System.out.println("Prende el vehiculo primeramente");
         }
+    }
+
+    @Override
+    public void girar(String direccion) {
+        this.direction = direccion;
     }
 
 }
